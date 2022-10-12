@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="/socket.io/socket.io.js"></script>
     <link rel="stylesheet" href="./css/style.css">
     <title>Solicitudes</title>
 </head>
@@ -13,7 +14,7 @@
     <!-- Formulario para probar la carga de productos -->
     <h1>Carga de productos:</h1>
 
-    <form action="/api/productos" method="POST">
+    <form id="product-form">
 
         <label for="title">Titulo</label>
         <input type="text" name="title" id="title">
@@ -27,6 +28,19 @@
         <button type="submit">Enviar</button>
     </form>
 
+    <!-- Contenedor de productos -->
+    <table>
+        <thead>
+            <tr>
+                <th>Titulo</th>
+                <th>Precio</th>
+                <th>Miniatura</th>
+            </tr>
+        </thead>
+        <tbody id="products-container"></tbody>
+    </table>
+    
+    <script src="js/index.js"></script>
 </body>
 
 </html>
