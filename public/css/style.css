@@ -28,6 +28,12 @@ h2{
     margin: 30px 0;
 }
 
+hr{
+    width: 80%;
+    display: block;
+    margin: 0 auto;
+}
+
 section{
     margin: 50px 0;
 }
@@ -39,6 +45,10 @@ form {
     align-items: center;
 }
 
+#product-form label{
+    margin: 15px 0;
+}
+
 #product-form{
     border: 1px solid white;
     width: 340px;
@@ -46,12 +56,14 @@ form {
     padding: 20px;
 }
 
-label {
-    margin-top: 10px;
+input[type="color"]{
+    width: 40px;
+    height: 40px;
 }
 
 button {
     margin-top: 10px;
+    margin-bottom: 3px;
     padding: 5px;
 }
 
@@ -110,10 +122,34 @@ img {
 
 /* Chat */
 
+#chat-form{
+    width: 340px;
+    border: 1px solid white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+#chat-form label{
+    margin: 10px 0;
+}
+
+.chat__hr{
+    margin: 20px;
+}
+
 .chat-container{
     display: flex;
     justify-content: space-evenly;
     align-items: flex-start;
+}
+
+input#chatTextMsg{
+    width: 200px;
+    height: 30px;
+    margin: 10px 0;
 }
 
 #messages{
@@ -140,7 +176,6 @@ img {
 
 .message-user{
     font-weight: bold;
-    color: coral;
 }
 
 .message-text{

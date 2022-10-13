@@ -4,9 +4,16 @@ const formProd = document.getElementById('product-form');
 const formChat = document.getElementById('chat-form');
 const productsContainer = document.getElementById('products-container');
 
-formProd.addEventListener('submit',  (e) => {
+// Manejo de envío de formularios
+
+formProd.addEventListener('submit', (e) => {
 
     e.preventDefault();
+
+    // Control de mensajes vacíos
+    if (e.target.title.value === '' || e.target.price.value === '' || e.target.thumbnail.value === '') {
+        return alert('Todos los campos son obligatorios');
+    }
 
     const data = {
         title: e.target.title.value,
@@ -22,19 +29,35 @@ formProd.addEventListener('submit',  (e) => {
 
 });
 
-formChat.addEventListener('submit',  (e) => {
+formChat.addEventListener('submit', (e) => {
     e.preventDefault();
-    
+
+    // Control de mensajes vacíos
+    if (e.target.chatUserName.value == '' || e.target.chatTextMsg.value == '' || e.target.chatColor.value == '') {
+        return alert('Debe completar todos los campos');
+    }
+
     const data = {
         email: e.target.chatUserName.value,
-        message: e.target.chatTextMsg.value
+        message: e.target.chatTextMsg.value,
+        color: e.target.chatColor.value
     }
 
     socket.emit('new-message', data);
 
     e.target.chatTextMsg.value = '';
 
+    // Desabilitar los input
+    e.target.chatUserName.disabled = true;
+    e.target.chatColor.disabled = true;
+
+    // Hacer foco en el input de mensaje
+    e.target.chatTextMsg.focus();
 });
+
+
+
+// Manejador de eventos para el socket
 
 socket.on('productos', (data) => {
 
@@ -53,7 +76,7 @@ socket.on('productos', (data) => {
 
 socket.on('mensajes', (data) => {
     const chatContainer = document.getElementById('messages');
-    
+
     chatContainer.innerHTML = '';
 
     if (data.length === 0) {
@@ -64,15 +87,15 @@ socket.on('mensajes', (data) => {
 
     // Ordenar por id descendente para lograr que los mensajes se muestren en orden cronologico descendente
     data.sort((a, b) => b.id - a.id);
-    
+
 
     data.forEach(message => {
         chatContainer.innerHTML += `
             <div class="message-container">
-                <p class="message-user">${message.email}</p>
+                <p class="message-user" style="color: ${message.color}">${message.email}</p>
                 <p class="message-text">${message.message}</p>
                 <p class="message-date">${message.date}</p>
             </div>
         `;
     });
-} );
+});
