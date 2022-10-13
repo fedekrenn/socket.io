@@ -1,9 +1,10 @@
 const socket = io();
 
-const form = document.getElementById('product-form');
+const formProd = document.getElementById('product-form');
+const formChat = document.getElementById('chat-form');
 const productsContainer = document.getElementById('products-container');
 
-form.addEventListener('submit',  (e) => {
+formProd.addEventListener('submit',  (e) => {
 
     e.preventDefault();
 
@@ -21,8 +22,21 @@ form.addEventListener('submit',  (e) => {
 
 });
 
+formChat.addEventListener('submit',  (e) => {
+    e.preventDefault();
+    
+    const data = {
+        email: e.target.chatUserName.value,
+        message: e.target.chatTextMsg.value
+    }
+
+    socket.emit('new-message', data);
+
+    e.target.chatTextMsg.value = '';
+
+});
+
 socket.on('productos', (data) => {
-    console.log(data);
 
     productsContainer.innerHTML = '';
 
@@ -31,8 +45,34 @@ socket.on('productos', (data) => {
             <tr>
                 <td>${product.title}</td>
                 <td>$ ${product.price}</td>
-                <td><img src="${product.thumbnail}" alt="${product.title}" width="50px"></td>
+                <td><img src="${product.thumbnail}" alt="${product.title}"></td>
             </tr>
         `;
     });
 });
+
+socket.on('mensajes', (data) => {
+    const chatContainer = document.getElementById('messages');
+    
+    chatContainer.innerHTML = '';
+
+    if (data.length === 0) {
+        chatContainer.style.display = 'none';
+    } else {
+        chatContainer.style.display = 'block';
+    }
+
+    // Ordenar por id descendente para lograr que los mensajes se muestren en orden cronologico descendente
+    data.sort((a, b) => b.id - a.id);
+    
+
+    data.forEach(message => {
+        chatContainer.innerHTML += `
+            <div class="message-container">
+                <p class="message-user">${message.email}</p>
+                <p class="message-text">${message.message}</p>
+                <p class="message-date">${message.date}</p>
+            </div>
+        `;
+    });
+} );

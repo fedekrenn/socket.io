@@ -12,34 +12,53 @@
 
 <body>
     <!-- Formulario para probar la carga de productos -->
-    <h1>Carga de productos:</h1>
+    <h1>Mis productos</h1>
+    <section>
+        <h2>Cargar producto:</h2>
+        <form id="product-form">
 
-    <form id="product-form">
+            <label for="title">Titulo</label>
+            <input type="text" name="title" id="title">
 
-        <label for="title">Titulo</label>
-        <input type="text" name="title" id="title">
+            <label for="price">Precio</label>
+            <input type="number" name="price" id="price">
 
-        <label for="price">Precio</label>
-        <input type="number" name="price" id="price">
+            <label for="thumbnail">URL de Imagen</label>
+            <input type="url" name="thumbnail" id="thumbnail">
 
-        <label for="thumbnail">URL de Imagen</label>
-        <input type="url" name="thumbnail" id="thumbnail">
-
-        <button type="submit">Enviar</button>
-    </form>
+            <button type="submit" class="btn">Enviar</button>
+        </form>
+    </section>
 
     <!-- Contenedor de productos -->
-    <table>
-        <thead>
-            <tr>
-                <th>Titulo</th>
-                <th>Precio</th>
-                <th>Miniatura</th>
-            </tr>
-        </thead>
-        <tbody id="products-container"></tbody>
-    </table>
-    
+    <section>
+        <h2>Listado de productos:</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Titulo</th>
+                    <th>Precio</th>
+                    <th>Miniatura</th>
+                </tr>
+            </thead>
+            <tbody id="products-container"></tbody>
+        </table>
+    </section>
+
+    <section>
+        <h2>Chat:</h2>
+        <div class="chat-container">
+            <form id="chat-form">
+                <label for="chatUserName">Ingresá tu email</label>
+                <input type="email" id="chatUserName" name="chatUserName" placeholder="email@ejemplo.com" required>
+                <label for="chatTextMsg">Tu mensaje:</label>
+                <textarea id="chatTextMsg" name="chatTextMsg" cols="30" rows="5" required></textarea>
+                <button type="submit" class="btn">Enviar</button>
+            </form>
+            <div id="messages"></div>
+        </div>
+    </section>
+
     <script src="js/index.js"></script>
 </body>
 

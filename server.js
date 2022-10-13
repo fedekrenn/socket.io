@@ -34,9 +34,12 @@ io.on('connection', async socket => {
 
     socket.emit('mensajes', await manejadorMensajes.getAll());
 
-    socket.on('nuevoMensaje', async mensaje => {
+    socket.on('new-message', async mensaje => {
+
         mensaje.date = new Date().toLocaleString()
+
         await manejadorMensajes.save(mensaje)
+
         io.sockets.emit('mensajes', await manejadorMensajes.getAll());
     })
 });
