@@ -1,22 +1,39 @@
-const fs = require('fs');
-
 class ContenedorMensajes {
 
-    constructor(archivo) {
-        this.archivo = archivo;
+    constructor(knex, table) {
+        this.knex = knex;
+        this.table = table;
     }
 
-    // Metodos para guardar y leer mensajes
-    async save(obj) {
+    // Metodos 
+
+    async createTable() {
         try {
-            const contenido = await fs.promises.readFile(this.archivo, 'utf-8');
-            const data = JSON.parse(contenido);
-            obj.id = data.length + 1;
-            data.push(obj);
+            await this.knex.schema.hasTable(this.table)
+                .then(async (exists) => {
+                    if (!exists) {
+                        await this.knex.schema.createTable(this.table, (table) => {
+                            table.increments('id').primary();
+                            table.string('color')
+                            table.string('email').notNullable();
+                            table.string('message').notNullable();
+                            table.string('date').notNullable();
 
-            await fs.promises.writeFile(this.archivo, JSON.stringify(data, null, 2));
+                            console.log('Tabla de mensajes creada');
+                        });
+                    }
+                });
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
-            return obj.id;
+    async save(msj) {
+        try {
+            await this.knex(this.table).insert(msj);
+            console.log('Mensaje guardado');
+            return { message: "Se guardó correctamente el mensaje" };
+
 
         } catch (err) {
             console.log(err)
@@ -25,10 +42,9 @@ class ContenedorMensajes {
 
     async getAll() {
         try {
-            const contenido = await fs.promises.readFile(this.archivo, 'utf-8');
-            const data = JSON.parse(contenido);
-            return data;
-            
+            const mensajes = await this.knex(this.table).select();
+
+            return mensajes;
         } catch (error) {
             console.log(error);
         }
