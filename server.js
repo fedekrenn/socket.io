@@ -26,15 +26,14 @@ const io = new Socket(httpServer)
 io.on('connection', async socket => {
     console.log('Se conectó un nuevo cliente');
 
-    manejadorProductos.createTable()
-        .then(() => {
-            console.log('Tabla creada');
+    await manejadorProductos.createTable()
+        .catch(err => {
+            console.log(err);
         })
 
-
     // Productos
-    // socket.emit('productos', await manejadorProductos.getAll());
-    
+    socket.emit('productos', await manejadorProductos.getAll());
+
     socket.on('update', async producto => {
         await manejadorProductos.save(producto, true);
         io.sockets.emit('productos', await manejadorProductos.getAll());

@@ -9,15 +9,19 @@ class ContenedorProductos {
 
     async createTable() {
         try {
-            return await this.knex.schema.dropTableIfExists(this.table)
-                .then(() => {
-                    return this.knex.schema.createTable(this.table, table => {
-                        table.increments('id').primary();
-                        table.string('title');
-                        table.string('price');
-                        table.string('thumbnail');
-                    })
-                })
+            await this.knex.schema.hasTable(this.table)
+                .then(async (exists) => {
+                    if (!exists) {
+                        await this.knex.schema.createTable(this.table, (table) => {
+                            table.increments('id').primary();
+                            table.string('title').notNullable();
+                            table.integer('price').notNullable();
+                            table.string('thumbnail');
+
+                            console.log('Tabla creada');
+                        });
+                    }
+                });
         } catch (error) {
             console.log(error);
         }
@@ -26,6 +30,7 @@ class ContenedorProductos {
     async save(objeto) {
         try {
             await this.knex(this.table).insert(objeto);
+            console.log('Producto guardado');
             return { message: "Se guardó correctamente el objeto" };
         } catch (err) {
             console.log(err)
@@ -44,8 +49,8 @@ class ContenedorProductos {
     async getAll() {
         try {
             const products = await this.knex(this.table).select();
-            return products;
 
+            return products;
         } catch (error) {
             console.log(error);
         }
