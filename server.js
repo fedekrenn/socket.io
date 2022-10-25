@@ -6,7 +6,12 @@ const { Server: Socket } = require('socket.io')
 const ContenedorProductos = require('./src/class/Products')
 const ContenedorMensajes = require('./src/class/Messages')
 
-const manejadorProductos = new ContenedorProductos('productos.txt')
+/* ------ Knex ------ */
+const knexConfigMariaDB = require('./src/options/dbMariaDB')
+const knexProd = require('knex')(knexConfigMariaDB)
+
+
+const manejadorProductos = new ContenedorProductos(knexProd, 'productos')
 const manejadorMensajes = new ContenedorMensajes('mensajes.txt')
 
 
@@ -19,29 +24,32 @@ const io = new Socket(httpServer)
 // Configuración de socket
 
 io.on('connection', async socket => {
-
     console.log('Se conectó un nuevo cliente');
 
-    // Productos
-    socket.emit('productos', await manejadorProductos.getAll());
+    manejadorProductos.createTable()
+        .then(() => {
+            console.log('Tabla creada');
+        })
 
+
+    // Productos
+    // socket.emit('productos', await manejadorProductos.getAll());
+    
     socket.on('update', async producto => {
         await manejadorProductos.save(producto, true);
         io.sockets.emit('productos', await manejadorProductos.getAll());
     })
 
-    // Mensajes
 
+    // Mensajes
     socket.emit('mensajes', await manejadorMensajes.getAll());
 
     socket.on('new-message', async mensaje => {
-
         mensaje.date = new Date().toLocaleString()
-
         await manejadorMensajes.save(mensaje)
-
         io.sockets.emit('mensajes', await manejadorMensajes.getAll());
     })
+
 });
 
 /* ----------------------- */

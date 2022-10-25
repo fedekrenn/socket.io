@@ -1,29 +1,32 @@
-const fs = require('fs');
-
 class ContenedorProductos {
 
-    constructor(archivo) {
-        this.archivo = archivo;
+    constructor(knex, table) {
+        this.knex = knex;
+        this.table = table;
     }
 
     // Metodos
-    async save(objeto, newId) {
+
+    async createTable() {
         try {
-            const contenido = await fs.promises.readFile(this.archivo, 'utf-8');
-            const data = JSON.parse(contenido);
+            return await this.knex.schema.dropTableIfExists(this.table)
+                .then(() => {
+                    return this.knex.schema.createTable(this.table, table => {
+                        table.increments('id').primary();
+                        table.string('title');
+                        table.string('price');
+                        table.string('thumbnail');
+                    })
+                })
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
-            const arrayOfIds = data.map(elemento => elemento.id);
-
-            if (newId) objeto.id = Math.max(...arrayOfIds) + 1;
-
-            data.push(objeto);
-
-            data.sort((a, b) => a.id - b.id);
-
-            await fs.promises.writeFile(this.archivo, JSON.stringify(data, null, 2));
-            console.log("Se guardó correctamente el objeto id: ", objeto.id);
-            return objeto.id;
-
+    async save(objeto) {
+        try {
+            await this.knex(this.table).insert(objeto);
+            return { message: "Se guardó correctamente el objeto" };
         } catch (err) {
             console.log(err)
         }
@@ -31,10 +34,8 @@ class ContenedorProductos {
 
     async getById(id) {
         try {
-            const contenido = await fs.promises.readFile(this.archivo, 'utf-8');
-            const data = JSON.parse(contenido);
-            const objeto = data.find(elemento => elemento.id == id);
-            return objeto;
+            const product = await this.knex(this.table).where({ id: id }).first();
+            return product;
         } catch (error) {
             console.log(error);
         }
@@ -42,31 +43,9 @@ class ContenedorProductos {
 
     async getAll() {
         try {
-            const contenido = await fs.promises.readFile(this.archivo, 'utf-8');
-            const data = JSON.parse(contenido);
-            return data;
-        } catch (error) {
-            console.log(error);
-        }
-    }
+            const products = await this.knex(this.table).select();
+            return products;
 
-    async deleteById(id) {
-        try {
-            const contenido = await fs.promises.readFile(this.archivo, 'utf-8');
-            const data = JSON.parse(contenido);
-            const arrayFiltrado = data.filter(elemento => elemento.id != id);
-            await fs.promises.writeFile(this.archivo, JSON.stringify(arrayFiltrado, null, 2));
-
-            console.log("Se eliminó correctamente el objeto id: ", id);
-        } catch (error) {
-            console.log(error);
-        }
-    }
-
-    async deleteAll() {
-        try {
-            await fs.promises.writeFile(this.archivo, JSON.stringify([], null, 2));
-            console.log("Se eliminó correctamente el archivo");
         } catch (error) {
             console.log(error);
         }

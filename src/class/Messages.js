@@ -17,8 +17,8 @@ class ContenedorMensajes {
             await fs.promises.writeFile(this.archivo, JSON.stringify(data, null, 2));
 
             return obj.id;
-        } catch (err) {
 
+        } catch (err) {
             console.log(err)
         }
     }
@@ -28,6 +28,7 @@ class ContenedorMensajes {
             const contenido = await fs.promises.readFile(this.archivo, 'utf-8');
             const data = JSON.parse(contenido);
             return data;
+            
         } catch (error) {
             console.log(error);
         }
