@@ -57,22 +57,22 @@ formChat.addEventListener('submit', (e) => {
 
 
 
-// Manejador de eventos para el socket
+// Manejador de eventos para el socket - Para el desafío de la clase 22 se comenta así se trabaja con faker
 
-socket.on('productos', (data) => {
+// socket.on('productos', (data) => {
 
-    productsContainer.innerHTML = '';
+//     productsContainer.innerHTML = '';
 
-    data.forEach(product => {
-        productsContainer.innerHTML += `
-            <tr>
-                <td>${product.title}</td>
-                <td>$ ${product.price}</td>
-                <td><img src="${product.thumbnail}" alt="${product.title}"></td>
-            </tr>
-        `;
-    });
-});
+//     data.forEach(product => {
+//         productsContainer.innerHTML += `
+//             <tr>
+//                 <td>${product.title}</td>
+//                 <td>$ ${product.price}</td>
+//                 <td><img src="${product.thumbnail}" alt="${product.title}"></td>
+//             </tr>
+//         `;
+//     });
+// });
 
 socket.on('mensajes', (data) => {
     const chatContainer = document.getElementById('messages');
@@ -99,3 +99,26 @@ socket.on('mensajes', (data) => {
         `;
     });
 });
+
+async function renderProducts() {
+
+    const data = await fetch('http://localhost:8080/api/productos-test');
+
+    const products = await data.json();
+
+    console.log(products);
+
+    productsContainer.innerHTML = '';
+
+    products.forEach(product => {
+        productsContainer.innerHTML += `
+            <tr>
+                <td>${product.title}</td>
+                <td>$ ${product.price}</td>
+                <td><img src="${product.thumbnail}" alt="${product.title}"></td>
+            </tr>
+        `;
+    });
+}
+
+renderProducts();

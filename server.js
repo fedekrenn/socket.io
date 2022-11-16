@@ -1,5 +1,7 @@
 const express = require('express');
 
+const { faker } = require('@faker-js/faker');
+
 const { Server: HttpServer } = require('http')
 const { Server: Socket } = require('socket.io')
 
@@ -24,6 +26,23 @@ const manejadorMensajes = new ContenedorMensajes(knexChat,'mensajes')
 const app = express();
 const httpServer = new HttpServer(app)
 const io = new Socket(httpServer)
+
+
+// Faker
+
+app.get('/api/productos-test', (req, res) => {
+
+    const productos = []
+
+    for (let i = 0; i < 5; i++) {
+        productos.push({
+            title: faker.commerce.productName(),
+            price: faker.commerce.price(),
+            thumbnail: faker.image.image()
+        })
+    }
+    res.json(productos)
+})
 
 // Configuración de socket
 
@@ -71,4 +90,5 @@ app.use(express.static('public'));
 const PORT = process.env.PORT || 8080;
 
 const server = httpServer.listen(PORT, () => console.log(`Servidor http escuchando en el puerto ${server.address().port}`));
+
 server.on('error', error => console.log(`Error en servidor ${error}`));

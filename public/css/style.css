@@ -181,3 +181,7 @@ input#chatTextMsg{
 .message-text{
     margin: 5px;
 }
+
+.show-or-hide{
+    display: none;
+}
