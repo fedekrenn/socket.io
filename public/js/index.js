@@ -88,6 +88,7 @@ socket.on('mensajes', (data) => {
     // Ordenar por id descendente para lograr que los mensajes se muestren en orden cronologico descendente
     data.sort((a, b) => b.id - a.id);
 
+    console.log(data)
 
     data.forEach(message => {
         chatContainer.innerHTML += `
@@ -102,11 +103,9 @@ socket.on('mensajes', (data) => {
 
 async function renderProducts() {
 
-    const data = await fetch('http://localhost:8080/api/productos-test');
+    const data = await fetch('/api/productos-test');
 
     const products = await data.json();
-
-    console.log(products);
 
     productsContainer.innerHTML = '';
 
