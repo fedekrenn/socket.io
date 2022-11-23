@@ -12,6 +12,7 @@ const ContenedorMensajes = require('./src/class/Messages')
 
 const knexConfigMariaDB = require('./src/options/dbMariaDB')
 const knexConfigSQLite = require('./src/options/dbSqlite3')
+
 const knexProd = require('knex')(knexConfigMariaDB)
 const knexChat = require('knex')(knexConfigSQLite)
 
@@ -27,22 +28,6 @@ const app = express();
 const httpServer = new HttpServer(app)
 const io = new Socket(httpServer)
 
-
-// Faker
-
-app.get('/api/productos-test', (req, res) => {
-
-    const productos = []
-
-    for (let i = 0; i < 5; i++) {
-        productos.push({
-            title: faker.commerce.productName(),
-            price: faker.commerce.price(),
-            thumbnail: faker.image.image()
-        })
-    }
-    res.json(productos)
-})
 
 // Configuración de socket
 

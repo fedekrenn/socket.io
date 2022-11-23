@@ -22,19 +22,19 @@ h1 {
 
 }
 
-h2{
+h2 {
     text-align: center;
     font-style: italic;
     margin: 30px 0;
 }
 
-hr{
+hr {
     width: 80%;
     display: block;
     margin: 0 auto;
 }
 
-section{
+section {
     margin: 50px 0;
 }
 
@@ -45,18 +45,18 @@ form {
     align-items: center;
 }
 
-#product-form label{
+#product-form label {
     margin: 15px 0;
 }
 
-#product-form{
+#product-form {
     border: 1px solid white;
     width: 340px;
     margin: 0 auto;
     padding: 20px;
 }
 
-input[type="color"]{
+input[type="color"] {
     width: 40px;
     height: 40px;
 }
@@ -122,7 +122,7 @@ img {
 
 /* Chat */
 
-#chat-form{
+#chat-form {
     width: 340px;
     border: 1px solid white;
     display: flex;
@@ -132,27 +132,27 @@ img {
     padding: 20px;
 }
 
-#chat-form label{
+#chat-form label {
     margin: 10px 0;
 }
 
-.chat__hr{
+.chat__hr {
     margin: 20px;
 }
 
-.chat-container{
+.chat-container {
     display: flex;
     justify-content: space-evenly;
     align-items: flex-start;
 }
 
-input#chatTextMsg{
+input#chatTextMsg {
     width: 200px;
     height: 30px;
     margin: 10px 0;
 }
 
-#messages{
+#messages {
     height: 400px;
     overflow-y: scroll;
 }
@@ -169,19 +169,15 @@ input#chatTextMsg{
     border-radius: 0px 20px 20px 20px;
 }
 
-.message-date{
+.message-date {
     text-align: right;
     font-size: 10px;
 }
 
-.message-user{
+.message-user {
     font-weight: bold;
 }
 
-.message-text{
+.message-text {
     margin: 5px;
-}
-
-.show-or-hide{
-    display: none;
 }

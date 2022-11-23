@@ -57,22 +57,20 @@ formChat.addEventListener('submit', (e) => {
 
 
 
-// Manejador de eventos para el socket - Para el desafío de la clase 22 se comenta así se trabaja con faker
+// Manejador de eventos para el socket
 
-// socket.on('productos', (data) => {
-
-//     productsContainer.innerHTML = '';
-
-//     data.forEach(product => {
-//         productsContainer.innerHTML += `
-//             <tr>
-//                 <td>${product.title}</td>
-//                 <td>$ ${product.price}</td>
-//                 <td><img src="${product.thumbnail}" alt="${product.title}"></td>
-//             </tr>
-//         `;
-//     });
-// });
+socket.on('productos', (data) => {
+    productsContainer.innerHTML = '';
+    data.forEach(product => {
+        productsContainer.innerHTML += `
+            <tr>
+                <td>${product.title}</td>
+                <td>$ ${product.price}</td>
+                <td><img src="${product.thumbnail}" alt="${product.title}"></td>
+            </tr>
+        `;
+    });
+});
 
 socket.on('mensajes', (data) => {
     const chatContainer = document.getElementById('messages');
